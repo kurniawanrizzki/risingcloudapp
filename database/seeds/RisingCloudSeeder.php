@@ -15,7 +15,7 @@ class RisingCloudSeeder extends Seeder
           '1' => [
                     'id' => 1,
                     'username' => 'administrator',
-                    'password' => Hash::make('Password 123'),
+                    'password' => bcrypt('Password 123'),
                     'phone' => '621282395560',
                     'address' => 'Jakarta Selatan, DKI Jakarta',
                     'role' => 0,
@@ -25,7 +25,7 @@ class RisingCloudSeeder extends Seeder
           '2' => [
                     'id' => 2,
                     'username' => 'employee',
-                    'password' => Hash::make('Password 123'),
+                    'password' => bcrypt('Password 123'),
                     'phone' => '6281282395560',
                     'address' => 'Jakarta Selatan, DKI Jakarta',
                     'role' => 1,

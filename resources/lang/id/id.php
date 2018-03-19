@@ -31,6 +31,11 @@
         
         //user
         
+        //message
+        'username_not_found_msg' => 'ID Kasir tidak ditemukan, Silahkan untuk mencoba lagi.',
+        'password_not_matched_msg' => 'Sandi yang anda masukkan tidak sesuai, Silahkan untuk mencoba lagi.',
+        'end_session_msg' => 'Session anda telah berkahir, Silahkan login kembali untuk mengakses '.env('APP_NAME'),
+        
     ];
 
 

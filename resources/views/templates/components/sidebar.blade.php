@@ -5,7 +5,7 @@
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">{{env("APP_NAME")}}</a>
+            <a class="navbar-brand" href="{{ route('dashboard.index') }}">{{env("APP_NAME")}}</a>
         </div>
 
         <ul class="nav navbar-top-links navbar-right">
@@ -22,7 +22,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#"><i class="fas fa-sign-out-alt"></i> 
+                        <a href="{{ route('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> 
                         {{ trans('id.logout_title') }}
                         </a>
                     </li>
@@ -34,7 +34,7 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="#"><i class="fas fa-home"></i>
+                        <a href="{{ route('dashboard.index') }}"><i class="fas fa-home"></i>
                         {{ trans('id.main_title') }}
                         </a>
                     </li>

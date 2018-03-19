@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages/product');
+Route::get('/',['as' => 'auth.index', 'uses' => 'AuthController@index']);
+Route::post('/', ['as' => 'auth.action', 'uses' => 'AuthController@auth']);
+Route::get('/logout',['as'=>'auth.logout', 'uses'=>'AuthController@logout']);
+
+Route::group ([
+    'prefix' => 'dashboard',
+], function (){
+    
+    Route::get('/',['as'=>'dashboard.index', 'uses'=>'DashboardController@index']);
+
+    
 });
