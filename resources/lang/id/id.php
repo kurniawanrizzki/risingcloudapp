@@ -10,7 +10,7 @@
     
         //title
         'login_title' =>'Halaman Masuk',
-        'main_title' => 'Halaman Utama',
+        'main_title' => 'Halaman Produk',
         'profile_title' => 'Profil',
         'logout_title' => 'Keluar',
         'transaction_title' => 'Transaksi',
@@ -26,6 +26,16 @@
         'login_button_text' => 'Masuk',
         
         //product
+        'view_text'=>'Lihat',
+        'tools_text'=>'Peralatan',
+        'edit_text'=>'Ubah',
+        'delete_text'=>'Hapus',
+        'search_product_text'=>'Masukkan keyword produk ...',
+        'filter_according_to_text'=>'Urutkan berdasarkan',
+        'max_stock_text' => 'Stok Tertinggi',
+        'min_stock_text' => 'Stok Terendah',
+        'max_price_text' => 'Harga Tertinggi',
+        'min_price_text' => 'Harga Terendah',
         
         //transaction
         
@@ -35,6 +45,7 @@
         'username_not_found_msg' => 'ID Kasir tidak ditemukan, Silahkan untuk mencoba lagi.',
         'password_not_matched_msg' => 'Sandi yang anda masukkan tidak sesuai, Silahkan untuk mencoba lagi.',
         'end_session_msg' => 'Session anda telah berkahir, Silahkan login kembali untuk mengakses '.env('APP_NAME'),
+        'out_of_stock_msg' => 'ITEM KOSONG',
         
     ];
 

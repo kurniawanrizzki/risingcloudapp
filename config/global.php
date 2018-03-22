@@ -17,5 +17,8 @@ return [
     'ADMIN_ROLE_ID' => 0,
     'CASHIER_ROLE_ID' => 1,
     
+    //OTHER
+    'APPLIED_CURRENCY'=>"IDR ",
+    
 ];
 
