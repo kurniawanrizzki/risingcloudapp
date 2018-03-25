@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\User;
+use App\Http\Requests\AuthRequest;
+use App\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
@@ -14,12 +14,8 @@ class AuthController extends Controller
      * Initiate welcome page;
      */
     public function index () {
-
-        if (!Session::get('login')) {
-            return view('pages.auth'); 
-        }
-        
-        return redirect()->route('dashboard.index');
+       
+        return view('pages.auth');;
     
     }
     
@@ -36,12 +32,12 @@ class AuthController extends Controller
      * @param UserRequest $request user model;
      * @return type page;
      */
-    public function auth (UserRequest $request) {
+    public function auth (AuthRequest $request) {
                 
         $username = $request->username;
         $password = $request->password;
         
-        $data = User::where('username', $username)->first ();
+        $data = Auth::where('username', $username)->first ();
         $isValidatedData = count($data) > 0;
         if (!$isValidatedData) {
             return redirect ()->route('auth.index')->with('alert', Config::get('global.USERNAME_NOT_FOUND_ERROR'));
@@ -57,7 +53,7 @@ class AuthController extends Controller
         Session::put('login', TRUE);
         Session::put('role', $data->role);
         
-        User::where('id', $data->id)->update([
+        Auth::where('id', $data->id)->update([
             'remember_token' => $request->_token
         ]);
         
@@ -73,7 +69,7 @@ class AuthController extends Controller
         
         if (Session::has('id')) {
             
-            User::where('id', Session::get('id'))->update([
+            Auth::where('id', Session::get('id'))->update([
                 'remember_token'=> NULL
             ]);
             

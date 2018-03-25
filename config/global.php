@@ -12,6 +12,8 @@ return [
     'USERNAME_NOT_FOUND_ERROR' => 0,
     'PASSWORD_NOT_MATCHED_ERROR' => 1,
     'SESSION_END_ERROR' => 2,
+    'HTTP_SUCCESS_CODE' => 200,
+    'HTTP_INTERNAL_ERROR_CODE' => 500,
 
     //ROLE
     'ADMIN_ROLE_ID' => 0,
@@ -19,6 +21,14 @@ return [
     
     //OTHER
     'APPLIED_CURRENCY'=>"IDR ",
+    'USERS_COLUMNS_TITLE' => [
+        'ID','ID KASIR','ROLE','NOMOR TELEPON','ALAMAT','PERALATAN'
+    ],
+    'USER_ADD_ACTION' => 0,
+    'USER_EDIT_ACTION' => 1,
+    'PROFILE_ACTION' => 2,
+    'OWN_CHANGE_PASSWORD_ACTION' => 3,
+    'USER_CHANGE_PASSWORD_ACTION' => 4,
     
 ];
 

@@ -36,6 +36,7 @@
                 
                 @if (\Session::has('alert'))
                     <div class="alert {{ \Session::get('alert') != \Config::get('global.SESSION_END_ERROR') ? 'alert-danger':'alert-success' }}">
+                        <i>
                         @switch(\Session::get('alert'))
                             @case(\Config::get('global.USERNAME_NOT_FOUND_ERROR'))
                                 {{ trans('id.username_not_found_msg') }}
@@ -48,6 +49,7 @@
                             @break
                             @default
                         @endswitch
+                        </i>
                     </div>
                 @endif
             </div>

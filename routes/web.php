@@ -16,10 +16,19 @@ Route::post('/', ['as' => 'auth.action', 'uses' => 'AuthController@auth']);
 Route::get('/logout',['as'=>'auth.logout', 'uses'=>'AuthController@logout']);
 
 Route::group ([
-    'prefix' => 'dashboard',
+    'prefix' => 'dashboard', 'middleware' => 'auth.rscloud'
 ], function (){
     
     Route::get('/',['as'=>'dashboard.index', 'uses'=>'DashboardController@index']);
-
     
+    Route::group ([
+        'prefix' => 'user'], function () {
+            Route::get('/',['as'=>'dashboard.user','uses'=>'UserController@index']);
+            Route::post('/add',['as'=>'dashboard.user.add', 'uses'=>'UserController@create']);
+            Route::post('/edit',['as'=>'dashboard.user.edit', 'uses'=>'UserController@update']);
+            Route::get('/profile',['as'=>'dashboard.user.view', 'uses'=>'UserController@view']);
+            Route::get('/{id}/delete',['as'=>'dashboard.user.delete', 'uses'=>'UserController@delete']);
+        }
+    ); 
+       
 });

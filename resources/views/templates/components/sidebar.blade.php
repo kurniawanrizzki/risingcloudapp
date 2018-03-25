@@ -12,17 +12,17 @@
 
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fas fa-user-circle"></i> <i class="fas fa-caret-down"></i>
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li>
-                        <a href="#"><i class="fas fa-user-circle"></i>
+                        <a data-toggle="modal" data-target="#user-own-form" data-backdrop="static" data-keyboard="false" id="profile-id"><i class="fa fa-user fa-fw"></i>
                         {{ trans('id.profile_title') }}
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> 
+                        <a href="{{ route('auth.logout') }}"><i class="fa fa-sign-out fa-fw"></i> 
                         {{ trans('id.logout_title') }}
                         </a>
                     </li>
@@ -34,35 +34,87 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="{{ route('dashboard.index') }}"><i class="fas fa-home"></i>
+                        <a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard fa-fw"></i>
                         {{ trans('id.main_title') }}
                         </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-exchange-alt"></i> 
+                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> 
                             {{ trans('id.transaction_title') }}<span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
+                            
+                            @if(\Session::get('role') == \Config::get('global.ADMIN_ROLE_ID'))
+                    
+                                <li>
+                                    <a href="#"><i class="fa fa-files-o fa-fw"></i>
+                                        {{ trans('id.report_title') }}
+                                    </a>
+                                </li>
+
+                            @endif
+                            
                             <li>
-                                <a href="#"><i class="fas fa-file-alt"></i>
-                                    {{ trans('id.report_title') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fab fa-sellsy"></i>
+                                <a href="#"><i class="fa fa-barcode fa-fw"></i>
                                     {{ trans('id.cashier_title') }}
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-users"></i>
-                            {{ trans('id.users_title') }}
-                        </a>
-                    </li>
+                    @if(\Session::get('role') == \Config::get('global.ADMIN_ROLE_ID'))
+                    
+                        <li>
+                            <a href="{{ route('dashboard.user') }}"><i class="fa fa-users fa-fw"></i>
+                                {{ trans('id.users_title') }}
+                            </a>
+                        </li>
+                    
+                    @endif
                 </ul>
             </div>
         </div>
     </nav>
+    
+    @modal (
+        user-own-form,
+        user-canceled-own-filled-form,
+        id.profile_title,
+        global.PROFILE_ACTION
+    )
+    
+    @modal (
+        user-add-form,
+        user-canceled-filled-add-form,
+        id.create_form_title_text,
+        global.USER_ADD_ACTION
+    )
+
+    @modal (
+        user-edit-form,
+        user-canceled-edit-filled-edit-form,
+        id.edit_form_title_text,
+        global.USER_EDIT_ACTION
+    )
+    
+    @modal (
+        user-own-password-form,
+        user-own-canceled-password-filled-form,
+        id.edit_form_change_password_text,
+        global.OWN_CHANGE_PASSWORD_ACTION
+    )
+    
+    @modal (
+        user-password-form,
+        user-canceled-password-filled-form,
+        id.edit_form_change_password_text,
+        global.USER_CHANGE_PASSWORD_ACTION
+    )
+
+    @alert (
+        delete-alert,
+        FALSE,
+        danger,
+        id.delete_msg
+    )
 
 @endsection
