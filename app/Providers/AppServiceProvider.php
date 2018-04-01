@@ -159,10 +159,11 @@ class AppServiceProvider extends ServiceProvider
             return $this->buildUserContentForm($routeFormId, $routeForm);
         } else if ($routeForm == Config::get('global.PROFILE_ACTION')) {
             return $this->buildProfileForm();
+        } else if ($routeForm == Config::get('global.PRODUCT_ADD_ACTION') || $routeForm == Config::get('global.PRODUCT_EDIT_ACTION')) {
+            return $this->buildProductContentForm($routeFormId, $routeForm);
         }
 
-        return $this->buildProductContentForm();
-        
+        return $this->buildCategoryContentForm($routeFormId, $routeForm);
     }
     
     /**
@@ -320,7 +321,7 @@ class AppServiceProvider extends ServiceProvider
             ?>
 
             {!! Form::submit(
-            $routeForm == \Config::get('global.USER_ADD_ACTION')?trans('id.form_user_create_text'):trans('id.form_user_edit_text'), 
+            $routeForm == \Config::get('global.USER_ADD_ACTION')?trans('id.form_create_text'):trans('id.form_edit_text'), 
             ['class'=>'btn btn-lg btn-success btn-block']) !!}
             
             {!! Form::close() !!}
@@ -329,10 +330,124 @@ class AppServiceProvider extends ServiceProvider
         
     }
     
-    protected function buildProductContentForm () {
+    protected function buildProductContentForm ($routeFormId, $routeForm) {
+        return 
+        "<div class='panel-body'>
+            
+            {!!
+                Form::open([
+                    'id'    => '".$routeFormId."-id',
+                    'method'=> 'post'
+                ])
+            !!}
+            
+                {{ csrf_field() }}
+                
+                <?php
+                if ($routeForm !== \Config::get('global.PRODUCT_ADD_ACTION')) {
+
+                ?>
+
+                    {!! Form::hidden('user_id','',['class'=>'form-control']) !!}
+
+                <?php
+                }   
+                ?>
+                <div class='form-group name-group'>
+                    {!! Form::label('', '', ['class'=>'control-label name_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('name','',['class'=>'form-control name_error_field','placeholder'=> trans('id.product_name_text')]) !!}
+                </div>
+                
+                <div class='form-group category-group'>
+                    {!! Form::label('', '', ['class'=>'control-label category_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::select('category',[],'0',['class'=>'form-control category_error_field']) !!}
+                </div>
+
+                <div class='form-group deskripsi-group'>
+                    {!! Form::label('', '', ['class'=>'control-label deskripsi_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
+                    {!! Form::textarea('deskripsi','',['class'=>'form-control deskripsi_error_field','rows'=>'3','placeholder'=> trans('id.product_description_text')]) !!}
+                </div>
+
+                <div class='form-group purchase-group'>
+                    {!! Form::label('', '', ['class'=>'control-label purchase_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('purchase','',['class'=>'form-control purchase_error_field','placeholder'=> trans('id.purchase_text')]) !!}
+                </div>
+
+                <div class='form-group sell-group'>
+                    {!! Form::label('', '', ['class'=>'control-label sell_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('sell','',['class'=>'form-control sell_error_field','placeholder'=> trans('id.sell_text')]) !!}
+                </div>
+                
+                <div class='form-group'>
+                    {!! Form::label('product_image', \Lang::get('id.upload_image_text'), ['class'=>'control-label']) !!}
+                    <div class='form-group product_image-group'>
+                        {!! Form::label('', '', ['class'=>'control-label product_image_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
+                        {!! Form::file('product_image','',['class'=>'form-control product_image_error_field']) !!}
+                    </div>
+                </div>
+
+                <div class='form-group product_image-group'>
+                    {!! Form::label('', '', ['class'=>'control-label product_image_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
+                    {!! Form::file('product_image','',['class'=>'form-control product_image_error_field']) !!}
+                </div>
+
+            {!! Form::submit(
+            $routeForm == \Config::get('global.PRODUCT_ADD_ACTION')?trans('id.form_create_text'):trans('id.form_edit_text'), 
+            ['class'=>'btn btn-lg btn-success btn-block']) !!}
+            
+            {!! Form::close() !!}
         
+        </div>";
     }
     
+    protected function buildCategoryContentForm ($routeFormId, $routeForm) {
+        return 
+        "<div class='panel-body'>
+            
+            {!!
+                Form::open([
+                    'id'    => '".$routeFormId."-id',
+                    'method'=> 'post',
+                    'files' => true
+                ])
+            !!}
+            
+                {{ csrf_field() }}
+                
+                <?php
+                if ($routeForm !== \Config::get('global.CATEGORY_ADD_ACTION')) {
+
+                ?>
+
+                    {!! Form::hidden('user_id','',['class'=>'form-control']) !!}
+
+                <?php
+                }   
+                ?>
+                <div class='form-group name-group'>
+                    {!! Form::label('', '', ['class'=>'control-label name_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('name','',['class'=>'form-control name_error_field','placeholder'=> trans('id.category_name_text')]) !!}
+                </div>
+
+                <div class='form-group category_description-group'>
+                    {!! Form::label('', '', ['class'=>'control-label category_description_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
+                    {!! Form::textarea('category_description','',['class'=>'form-control category_description_error_field','rows'=>'3','placeholder'=> trans('id.category_description_text')]) !!}
+                </div>
+                
+                    <div class='form-group category_img-group'>
+                        {!! Form::label('', '', ['class'=>'control-label category_img_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
+                        {!! Form::file('category_img','',['class'=>'form-control category_img_error_field']) !!}
+                    </div>
+
+            {!! Form::submit(
+            $routeForm == \Config::get('global.CATEGORY_ADD_ACTION')?trans('id.form_create_text'):trans('id.form_edit_text'), 
+            ['class'=>'btn btn-lg btn-success btn-block']) !!}
+            
+            {!! Form::close() !!}
+        
+        </div>";
+    }
+
     /**
      * Get as string
      * @param type $string

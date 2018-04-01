@@ -10,7 +10,8 @@
     
         //title
         'login_title' =>'Halaman Masuk',
-        'main_title' => 'Halaman Produk',
+        'main_title' => 'Halaman Utama',
+        'product_title' => 'Halaman Produk',
         'profile_title' => 'Profil',
         'logout_title' => 'Keluar',
         'transaction_title' => 'Transaksi',
@@ -30,12 +31,27 @@
         'tools_text'=>'Peralatan',
         'edit_text'=>'Ubah',
         'delete_text'=>'Hapus',
-        'search_product_text'=>'Masukkan keyword produk ...',
+        'search_product_text'=>'Masukkan keyword nama produk ...',
         'filter_according_to_text'=>'Urutkan berdasarkan',
         'max_stock_text' => 'Stok Tertinggi',
         'min_stock_text' => 'Stok Terendah',
         'max_price_text' => 'Harga Tertinggi',
         'min_price_text' => 'Harga Terendah',
+        'category_name_text' => 'Nama Kategori',
+        'category_description_text' => 'Deskripsi',
+        'category_img_text' => 'Unggah Gambar Kategori',
+        'product_name_text' => 'Nama Produk',
+        'product_description_text' => 'Deskripsi Produk',
+        'purchase_text'=> 'Harga Beli',
+        'sell_text'=>'Harga Jual',
+        'upload_image_text'=> 'Unggah Gambar Produk',
+        'product_create_form_title_text' => 'Form Tambah Produk',
+        'product_edit_form_title_text' => 'Form Ubah Produk',
+        'category_create_form_title_text' => 'Form Tambah Kategori',
+        'category_edit_form_title_text' => 'Form Ubah Kategori',
+        'new_product_text' => 'Produk Baru ...',
+        'new_category_text' => 'Kategori Baru ...',
+        'category_text'=>'Kategori',
         
         //transaction
         
@@ -52,8 +68,8 @@
           '1' => 'KASIR'  
         ],
         'confirm_password_text' => 'Konfirmasi Sandi',
-        'form_user_create_text' => 'Tambahkan',
-        'form_user_edit_text' => 'Ubah',
+        'form_create_text' => 'Tambahkan',
+        'form_edit_text' => 'Ubah',
         'old_password_text'=>'Sandi Lama',
         
         //message
@@ -70,6 +86,8 @@
         'internal_error_msg' => 'Internal Error.',
         'danger_own_user_deleted_msg' => 'Anda tidak dapat menghapus data anda sendiri.',
         'old_password_not_validated_msg' => 'The :attribute field is not validated.',
+        'data_not_found_msg' => 'DATA TIDAK DITEMUKAN.',
+        'move_product_msg' => 'Kategori :name tidak dapat dihapus. Pastikan kategori :name tidak mempunyai produk.',
         
         //general
         'cancel_text' => 'Batalkan',

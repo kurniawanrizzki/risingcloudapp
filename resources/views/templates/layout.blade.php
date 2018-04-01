@@ -62,11 +62,17 @@
         
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script>
+
         $(document).ready(function() {
                         
             $('#users_table').DataTable({
                 responsive: true
             });
+            
+            $('#search_btn').click(function (){
+                var searchParam = $("[name='search']").val();
+                window.location.href = "?search="+searchParam;
+            })
             
             $('#user-edit-form-canceled').click(function() {
                 var map = getUserFormItems();
@@ -93,6 +99,22 @@
                 $('#user-add-form').modal('hide');
             });
             
+            $('#product-add-form-canceled').click(function() {
+                $('#product-add-form').modal('hide');
+            });
+            
+            $('#product-edit-form-canceled').click(function() {
+                $('#product-edit-form').modal('hide');
+            });
+            
+            $('#category-add-form-canceled').click(function() {
+                $('#category-add-form').modal('hide');
+            });
+            
+            $('#category-edit-form-canceled').click(function() {
+                $('#category-edit-form').modal('hide');
+            });
+            
             $('#user-own-form-canceled').click(function() {
                 $('#content-profile').text("")
 
@@ -105,8 +127,19 @@
 
                 var deleteId = $(e.relatedTarget).data('id');
                 var confirmedButton = $('.confirmed_action_button');
-                                
-                confirmedButton.attr('href','/dashboard/user/'+deleteId+'/delete');
+                
+                var route = '{{ \Request::route()->getName()}}';
+                var url = '';
+                
+                if (route === 'dashboard.user') {
+                    url = '/dashboard/user/'+deleteId+'/delete';
+                } else if (route === 'dashboard.product.index') {
+                    url = '/dashboard/product/'+deleteId+'/delete';                    
+                } else if (route === 'dashboard.index') {
+                    url = '/dashboard/'+deleteId+'/delete';                    
+                }
+                
+                confirmedButton.attr('href', url);
                 
             });
             
@@ -125,6 +158,23 @@
                 $("[name='phone']").val(data.phone);
                 
             });
+            
+            $('#product-add-form').on('show.bs.modal', function(e) {
+                var categoryDropdown = $("[name='category']");
+                var categories =  <?php echo json_encode($categories) ?> ;
+
+                if (categories.data.length > 0) {
+                    
+                    $.each(categories.data, function(key,category) {
+                        categoryDropdown.append($("<option />").val(category.id).text(category.name));
+                    });
+                    
+                    return;
+                }
+                
+                showErrorField('category','Empty Category. Please add certain category before to add new product.');
+                
+            });
 
             $('#user-password-form').on('show.bs.modal', function(e) {
                 var dataId = $(e.relatedTarget).data('id');
@@ -138,22 +188,58 @@
             
             $('#user-add-form-id').submit(function (e) {
                 e.preventDefault();
-                userFormAJAXRequest($(this),"{{ route('dashboard.user.add') }}");
+                var map = getUserFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.user.add') }}", map,0);
             });
             
             $('#user-edit-form-id').submit(function (e) {
                 e.preventDefault();
-                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}");
+                var map = getUserFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
 
             $('#user-password-form-id').submit(function (e) {
                 e.preventDefault();
-                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}");
+                var map = getUserFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
             
             $('#user-own-password-form-id').submit(function (e) {
                 e.preventDefault();
-                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}");
+                var map = getUserFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
+            });
+            
+            $('#product-add-form-id').submit(function (e) {
+                e.preventDefault();
+                var map = [];
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.product.add') }}", map,1);
+            });
+            
+            $('#product-edit-form-id').submit(function (e) {
+                e.preventDefault();
+                var map = [];
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.product.edit') }}", map,1);
+            });
+            
+            $('#category-add-form-id').submit(function (e) {
+                e.preventDefault();
+                var map = getCategoryFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.add') }}", map,1);
+            });
+            
+            $('#category-edit-form-id').submit(function (e) {
+                e.preventDefault();
+                var map = getCategoryFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.edit') }}", map,1);
             });
             
             $('#profile-id').click(function(e){
@@ -211,76 +297,103 @@
              * User form ajax request;
              * @param {type} form
              * @param {type} route
+             * @param {type} map
+             * @param {type} code --> for file please put 1; Otherwise default;
              * @returns {undefined}
              */
-            function userFormAJAXRequest (form,route) {
-                                
-                var map = getUserFormItems();
-        
-                $.ajax({
-                    type    : 'POST',
-                    url     : route,
-                    data    : form.serialize(),
-                    dataType: 'json',
-                    success : function (e) {
-                        var response = e.responseJSON;
-                        
-                        if (typeof response !== 'undefined') {
-                            
-                           var errors = response.errors;
-                           
-                           if (typeof errors === 'undefined') {
-                               
-                                var status  = response.status;
-                                var msg     = response.message;
-
-                                if (status == 200) {
-
-                                    resetErrorField(map, true);
-                                    
-                                    // check which the modal that is displayed currently;
-                                    if ($('#user-add-form').hasClass('in')) {
-                                        $('#user-add-form').modal('hide');
-                                    } else if ($('#user-edit-form').hasClass('in')) {
-                                        $("[name='user_id']").val(""); 
-                                        $("[name='role']").val("0").change();
-                                        $('.role-group').show();
-                                        $('#user-edit-form').modal('hide');
-                                    } else if ($('#user-password-form').hasClass('in')) {
-                                        $("[name='user_id']").val(""); 
-                                        $('#user-password-form').modal('hide');                                        
-                                    }
-
-
-                                    alerting(msg,true);
-
-                                }
-                                
-                                return;
-                               
-                           }
-                           
-                           console.log(errors);
-                        
+            function userFormAJAXRequest (form,route,map,code) {
+                var mapper = map;
+                var request;
+                
+                switch (code) {
+                    case 1 :
+                        var serializeData = new FormData(form[0]);
+                        request = {
+                            type        : 'POST',
+                            url         : route,
+                            data        : serializeData,
+                            processData : false,
+                            contentType : false,
+                            cache       : false
                         }
-                            
-                    },
-                    error : function (e) {
-                        var errors = e.responseJSON.errors;
-                        if (typeof errors !== 'undefined') {
-                            
-                            Object.keys(errors).forEach(function(key) {
-                                var message = errors[key][0];
-                                showErrorField (key, message);
-                                map[key] = !map[key];
-                            });
-                            
-                            resetErrorField(map, false);
-                            
-                        }  
-                         
+                        
+                        break;
+                    default :
+                        
+                        request = {
+                            type    : 'POST',
+                            url     : route,
+                            data    : form.serialize(),
+                            dataType: 'json'
+                        };
+                        
+                        break;
+                }
+                                
+                request.success = function (e) {
+                    
+                    var response = e.responseJSON;
+
+                    if (typeof response !== 'undefined') {
+
+                       var errors = response.errors;
+
+                       if (typeof errors === 'undefined') {
+
+                            var status  = response.status;
+                            var msg     = response.message;
+
+                            if (status == 200) {
+
+                                resetErrorField(mapper, true);
+
+                                // check which the modal that is displayed currently;
+                                if ($('#user-add-form').hasClass('in')) {
+                                    $('#user-add-form').modal('hide');
+                                } else if ($('#user-edit-form').hasClass('in')) {
+                                    $("[name='user_id']").val(""); 
+                                    $("[name='role']").val("0").change();
+                                    $('.role-group').show();
+                                    $('#user-edit-form').modal('hide');
+                                } else if ($('#user-password-form').hasClass('in')) {
+                                    $("[name='user_id']").val(""); 
+                                    $('#user-password-form').modal('hide');                                        
+                                } else if ($('product-add-form').hasClass('in')) {
+                                    $('#product-add-form').modal('hide');                                        
+                                } else if ($('product-edit-form').hasClass('in')) {
+                                    $('#product-edit-form').modal('hide');                                       
+                                }
+
+                                alerting(msg,true);
+
+                            }
+
+                            return;
+
+                       }
+
+                       console.log(errors);
+
                     }
-                });
+                    
+                }
+                
+                request.error = function(e){
+                    var errors = e.responseJSON.errors;
+                    if (typeof errors !== 'undefined') {
+
+                        Object.keys(errors).forEach(function(key) {
+                            var message = errors[key][0];
+                            showErrorField (key, message);
+                            mapper[key] = !mapper[key];
+                        });
+
+                        resetErrorField(mapper, false);
+
+                    } 
+                };
+                
+                $.ajax(request);
                 
             }
             
@@ -351,6 +464,17 @@
                     confirm_password    : true,
                     phone               : true,
                     address             : true
+                };
+            }
+            
+            /**
+            * get category form items; 
+            */
+            function getCategoryFormItems () {
+                return {
+                    name                    : true,
+                    category_description    : true,
+                    category_img            : true
                 };
             }
             

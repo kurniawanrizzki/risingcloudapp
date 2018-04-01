@@ -18,7 +18,7 @@
                 
                     <div class="panel-heading clearfix">
                         <h4 class="panel-title pull-left" style="padding-top: 7.5px;">{{ trans('id.users_list_text') }}</h4>
-                        <button type="button" class="btn btn-default btn-outline pull-right" data-toggle="modal" data-target="#user-add-form" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus fa-fw"></i> {{ trans('id.form_user_create_text') }}</button>
+                        <button type="button" class="btn btn-default btn-outline pull-right" data-toggle="modal" data-target="#user-add-form" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus fa-fw"></i> {{ trans('id.form_create_text') }}</button>
                     </div>
                 
                     <div class="panel-body">

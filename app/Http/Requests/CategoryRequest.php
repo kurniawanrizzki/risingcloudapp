@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class AuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
-            'password' => 'required',
+            'name'                  => 'required|max:50|min:6|',
+            'category_img' => 'required|mimes:png,jpeg,jpg|max:500',
+            'category_description'  => 'required|max:300|min:15'
         ];
     }
-    
 }

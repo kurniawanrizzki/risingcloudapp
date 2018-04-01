@@ -15,8 +15,12 @@ class AuthController extends Controller
      */
     public function index () {
        
-        return view('pages.auth');;
-    
+        if (Session::get('login')) {
+            return redirect()->route('dashboard.index');
+        }
+        
+        return view('pages.auth');
+
     }
     
     /**

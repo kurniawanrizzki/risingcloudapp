@@ -74,7 +74,7 @@
             </div>
         </div>
     </nav>
-    
+        
     @modal (
         user-own-form,
         user-canceled-own-filled-form,
@@ -94,6 +94,41 @@
         user-canceled-edit-filled-edit-form,
         id.edit_form_title_text,
         global.USER_EDIT_ACTION
+    )
+    
+    @modal (
+        category-add-form,
+        category-canceled-filled-add-form,
+        id.category_create_form_title_text,
+        global.CATEGORY_ADD_ACTION
+    )
+    
+    @modal (
+        category-edit-form,
+        category-canceled-edit-filled-edit-form,
+        id.category_edit_form_title_text,
+        global.CATEGORY_EDIT_ACTION
+    )
+    
+    @modal (
+        product-add-form,
+        product-canceled-filled-add-form,
+        id.product_create_form_title_text,
+        global.PRODUCT_ADD_ACTION
+    )
+    
+    @modal (
+        product-edit-form,
+        product-canceled-edit-filled-edit-form,
+        id.product_edit_form_title_text,
+        global.PRODUCT_EDIT_ACTION
+    )
+    
+    @modal (
+        product-add-form,
+        product-canceled-filled-add-form,
+        id.product_create_form_title_text,
+        global.PRODUCT_ADD_ACTION
     )
     
     @modal (

@@ -20,14 +20,14 @@ class RSAuthMiddleware
         if (Session::get('login')) {
             
             $dstRoute = $request->route()->getName();
-            
+
             if (!$this->isPermissionAllowed($dstRoute)) {
                  return abort(404);
             }
-            
-            return $next($request);    
+           
+            return $next($request);     
         }
-        
+
         return redirect()->route('auth.index');
         
     }
@@ -42,14 +42,22 @@ class RSAuthMiddleware
         $isCashier = Session::get('role') != Config::get('global.ADMIN_ROLE_ID');
         
         $pageWithPermissionRouteList = [
-            'dashboard.index.add',
-            'dashboard.index.edit',
-            'dashboard.index.delete',
+            
+            'dashboard.add',
+            'dashboard.edit',
+            'dashboard.delete',
+            
+            'dashboard.product.add',
+            'dashboard.product.edit',
+            'dashboard.product.delete',
+            
             'dashboard.user',
             'dashboard.user.add',
             'dashboard.user.edit',
             'dashboard.user.delete',
+            
             'dashboard.report'
+            
         ];
         
         if ($isCashier) {

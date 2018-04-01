@@ -14,6 +14,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">{{ trans('id.login_header_text') }}</h3>
                     </div>
+                    
                     <div class="panel-body">
 
                         {!! Form::open([
@@ -33,6 +34,16 @@
                         
                     </div>
                 </div>
+                
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 
                 @if (\Session::has('alert'))
                     <div class="alert {{ \Session::get('alert') != \Config::get('global.SESSION_END_ERROR') ? 'alert-danger':'alert-success' }}">

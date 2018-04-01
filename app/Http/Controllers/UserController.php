@@ -143,28 +143,4 @@ class UserController extends Controller
         
     }
     
-    /**
-     * Build JSON response;
-     * @param type $httpCode
-     * @param type $message
-     * @param type $data
-     * @return type
-     */
-    protected function buildResponses ($httpCode, $message, $data = []) {
-        
-        $responsesJSON = [
-            'responseJSON' => [
-                "status"=> $httpCode,
-                "message"=> $message
-            ]
-        ];
-        
-        if (sizeof($data) > 0) {
-            $responsesJSON['responseJSON']['data'] = $data; 
-        }
-        
-        return response()->json($responsesJSON);
-        
-    }
-    
 }
