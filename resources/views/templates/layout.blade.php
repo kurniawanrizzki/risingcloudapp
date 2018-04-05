@@ -64,65 +64,19 @@
         <script>
 
         $(document).ready(function() {
-                        
+            
+            //user table;
             $('#users_table').DataTable({
                 responsive: true
             });
             
+            //search button event
             $('#search_btn').click(function (){
                 var searchParam = $("[name='search']").val();
                 window.location.href = "?search="+searchParam;
-            })
-            
-            $('#user-edit-form-canceled').click(function() {
-                var map = getUserFormItems();
-                resetErrorField(map, true);
-                $("[name='role']").val("0").change();
-                $('.role-group').show();
-
-                $('#user-edit-form').modal('hide');
-            });
- 
-            $('#user-password-form-canceled').click(function() {
-                var map = getUserFormItems();
-                resetErrorField(map, true);
-
-                $('#user-password-form').modal('hide');
             });
             
-            $('#user-add-form-canceled').click(function() {
-                var map = getUserFormItems();
-                resetErrorField(map, true);
-                $("[name='role']").val("0").change();
-                $('.role-group').show();
-                
-                $('#user-add-form').modal('hide');
-            });
-            
-            $('#product-add-form-canceled').click(function() {
-                $('#product-add-form').modal('hide');
-            });
-            
-            $('#product-edit-form-canceled').click(function() {
-                $('#product-edit-form').modal('hide');
-            });
-            
-            $('#category-add-form-canceled').click(function() {
-                $('#category-add-form').modal('hide');
-            });
-            
-            $('#category-edit-form-canceled').click(function() {
-                $('#category-edit-form').modal('hide');
-            });
-            
-            $('#user-own-form-canceled').click(function() {
-                $('#content-profile').text("")
-
-                $('#profile_password_btn').removeAttr('data-id');
-                $('#profile_edit_btn').removeAttr('data-edit');
-                $('#user-own-form').modal('hide');
-            });
-            
+            //delete alert
             $('#delete-alert').on('show.bs.modal', function(e) {
 
                 var deleteId = $(e.relatedTarget).data('id');
@@ -142,6 +96,56 @@
                 confirmedButton.attr('href', url);
                 
             });
+      
+            // Validate image size in product
+            $("input[name='product_image']").bind('change', function() {
+                var size = this.files[0].size/1024/1024;
+                if (size > 7) {
+                    var message = "<?php echo \Lang::get('id.file_large_error_msg',['file_input'=>'product']); ?>";
+                    showErrorField('product_image', message);
+                    $("input[name='product_image']").val('');
+                }
+            });
+            
+            // Validate image size in category
+            $("input[name='category_img']").bind('change', function() {
+                var size = this.files[0].size/1024/1024;
+                if (size > 7) {
+                    var message = "<?php echo \Lang::get('id.file_large_error_msg',['file_input'=>'category']); ?>";
+                    showErrorField('category_img', message);
+                    $("input[name='category_img']").val('');
+                }
+            });
+            
+            /**
+             * USER ADD COMPONENTS
+             */
+            
+            $('#user-add-form-id').submit(function (e) {
+                e.preventDefault();
+                var map = getUserFormItems();
+
+                userFormAJAXRequest($(this),"{{ route('dashboard.user.add') }}", map,0);
+            });
+            
+            $('#user-add-form-canceled').click(function() {
+                var map = getUserFormItems();
+                resetErrorField(map, true);
+                $("[name='role']").val("0").change();
+                $('.role-group').show();
+                
+                $('#user-add-form').modal('hide');
+            });
+                      
+            
+            /**
+             * END OF USER ADD COMPONENTS
+             */
+            
+            
+            /**
+             * USER EDIT COMPONENTS
+             */
             
             $('#user-edit-form').on('show.bs.modal', function(e) {
                 var selfRole = {{ \Session::get('role') }}
@@ -159,53 +163,62 @@
                 
             });
             
-            $('#product-add-form').on('show.bs.modal', function(e) {
-                var categoryDropdown = $("[name='category']");
-                var categories =  <?php echo json_encode($categories) ?> ;
-
-                if (categories.data.length > 0) {
-                    
-                    $.each(categories.data, function(key,category) {
-                        categoryDropdown.append($("<option />").val(category.id).text(category.name));
-                    });
-                    
-                    return;
-                }
-                
-                showErrorField('category','Empty Category. Please add certain category before to add new product.');
-                
-            });
-
-            $('#user-password-form').on('show.bs.modal', function(e) {
-                var dataId = $(e.relatedTarget).data('id');
-                $("[name='user_id']").val(dataId);
-            });
-            
-            $('#user-own-password-form').on('show.bs.modal', function(e) {
-                var dataId = $(e.relatedTarget).data('id');
-                $("[name='user_id']").val(dataId);
-            });
-            
-            $('#user-add-form-id').submit(function (e) {
-                e.preventDefault();
-                var map = getUserFormItems();
-
-                userFormAJAXRequest($(this),"{{ route('dashboard.user.add') }}", map,0);
-            });
-            
             $('#user-edit-form-id').submit(function (e) {
                 e.preventDefault();
                 var map = getUserFormItems();
 
                 userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
+            
+            $('#user-edit-form-canceled').click(function() {
+                var map = getUserFormItems();
+                resetErrorField(map, true);
+                $("[name='role']").val("0").change();
+                $('.role-group').show();
 
+                $('#user-edit-form').modal('hide');
+            });
+            
+            /**
+             *END OF USER EDIT COMPONENTS 
+             */
+             
+             /**
+              * USER CHANGE PASSWORD COMPONENTS
+              */
+             
+            $('#user-password-form').on('show.bs.modal', function(e) {
+                var dataId = $(e.relatedTarget).data('id');
+                $("[name='user_id']").val(dataId);
+            });
+            
             $('#user-password-form-id').submit(function (e) {
                 e.preventDefault();
                 var map = getUserFormItems();
 
                 userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
+            
+            $('#user-password-form-canceled').click(function() {
+                var map = getUserFormItems();
+                resetErrorField(map, true);
+
+                $('#user-password-form').modal('hide');
+            });
+            
+            /**
+             * END OF USER CHANGE PASSWORD
+             */
+            
+            /**
+             * OWN USER CHANGE PASSWORD
+             */
+            
+            $('#user-own-password-form').on('show.bs.modal', function(e) {
+                var dataId = $(e.relatedTarget).data('id');
+                $("[name='user_id']").val(dataId);
+            });
+         
             
             $('#user-own-password-form-id').submit(function (e) {
                 e.preventDefault();
@@ -214,19 +227,80 @@
                 userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
             
+            $('#user-own-form-canceled').click(function() {
+                $('#content-profile').text("")
+
+                $('#profile_password_btn').removeAttr('data-id');
+                $('#profile_edit_btn').removeAttr('data-edit');
+                $('#user-own-form').modal('hide');
+            
+            });
+            
+            /**
+             * END OF OWN USER CHANGE PASSWORD
+             */
+            
+            /**
+             * PRODUCT ADD FORM 
+             */
+            
+            $('#product-add-form').on('show.bs.modal', function(e) {
+                var categories =  <?php echo isset($categories)?json_encode($categories):null ?> ;
+                fillCategoriesDropdown (categories.data);
+                
+            });
+            
             $('#product-add-form-id').submit(function (e) {
                 e.preventDefault();
-                var map = [];
+                var map = getProductFormItems();
 
                 userFormAJAXRequest($(this),"{{ route('dashboard.product.add') }}", map,1);
             });
             
+            $('#product-add-form-canceled').click(function() {
+                $('#product-add-form').modal('hide');
+            });
+            
+            /**
+             * END OF PRODUCT ADD FORM
+             */
+            
+            /**
+             * PRODUCT EDIT FORM 
+             */
+            $('#product-edit-form').on('show.bs.modal', function(e) {
+                var categories =  <?php echo isset($categories)?json_encode($categories):null ?> ;
+                var data = $(e.relatedTarget).data('edit');
+                fillCategoriesDropdown (categories);
+                
+                $("[name='product_id']").val(data.id);
+                $("[name='product_name']").val(data.name);
+                $("[name='category']").val(data.category_id).change();
+                $("[name='deskripsi']").val(data.description);
+                $("[name='stock']").val(data.stock);
+                $("[name='purchase']").val(data.purchase);
+                $("[name='sell']").val(data.sell);
+                               
+            });
+            
             $('#product-edit-form-id').submit(function (e) {
                 e.preventDefault();
-                var map = [];
+                var map = getProductFormItems();
 
                 userFormAJAXRequest($(this),"{{ route('dashboard.product.edit') }}", map,1);
             });
+            
+            $('#product-edit-form-canceled').click(function() {
+                $('#product-edit-form').modal('hide');
+            });
+            
+            /**
+             * END OF PRODUCT EDIT FORM
+             */
+            
+            /**
+             * CATEGORY ADD FORM
+             */
             
             $('#category-add-form-id').submit(function (e) {
                 e.preventDefault();
@@ -235,12 +309,48 @@
                 userFormAJAXRequest($(this),"{{ route('dashboard.add') }}", map,1);
             });
             
+            $('#category-add-form-canceled').click(function() {
+                
+                var map = getCategoryFormItems();
+                resetErrorField(map, true);
+                
+                $('#category-add-form').modal('hide');
+                
+            });
+            
+            /**
+             * END OF CATEGORY ADD FORM
+             */
+            
+            /**
+             * CATEGORY EDIT FORM
+             */
+            
+            $('#category-edit-form').on('show.bs.modal', function(e) {
+                var data = $(e.relatedTarget).data('edit');
+                
+                $("[name='category_id']").val(data.id);
+                $("[name='category_name']").val(data.name);
+                $("[name='category_description']").val(data.description);
+                
+            });
+            
             $('#category-edit-form-id').submit(function (e) {
                 e.preventDefault();
                 var map = getCategoryFormItems();
 
                 userFormAJAXRequest($(this),"{{ route('dashboard.edit') }}", map,1);
             });
+            
+            $('#category-edit-form-canceled').click(function() {
+                var map = getCategoryFormItems();
+                resetErrorField(map, true);
+                $('#category-edit-form').modal('hide');
+            });
+            
+            /**
+             * END OF CATEGORY EDIT FORM
+             */
             
             $('#profile-id').click(function(e){
                 e.preventDefault();
@@ -339,12 +449,12 @@
                        var errors = response.errors;
 
                        if (typeof errors === 'undefined') {
-
+                            
+                            var dstRoute = null;
                             var status  = response.status;
                             var msg     = response.message;
 
                             if (status == 200) {
-
                                 resetErrorField(mapper, true);
 
                                 // check which the modal that is displayed currently;
@@ -358,13 +468,21 @@
                                 } else if ($('#user-password-form').hasClass('in')) {
                                     $("[name='user_id']").val(""); 
                                     $('#user-password-form').modal('hide');                                        
-                                } else if ($('product-add-form').hasClass('in')) {
-                                    $('#product-add-form').modal('hide');                                        
-                                } else if ($('product-edit-form').hasClass('in')) {
-                                    $('#product-edit-form').modal('hide');                                       
+                                } else if ($('#product-add-form').hasClass('in')) {
+                                    $('#product-add-form').modal('hide');
+                                    var categoryId = $("select[name = 'category']").val();
+                                    dstRoute = '/dashboard/product/'+categoryId+'/view';
+                                } else if ($('#product-edit-form').hasClass('in')) {
+                                    $("[name='product_id']").val(""); 
+                                    $('#product-edit-form').modal('hide'); 
+                                } else if ($('#category-add-form').hasClass('in')) {
+                                    $('#category-add-form').modal('hide');                                        
+                                } else if ($('#category-edit-form').hasClass('in')) {
+                                    $("[name='category_id']").val(""); 
+                                    $('#category-edit-form').modal('hide');                                       
                                 }
 
-                                alerting(msg,true);
+                                alerting(msg,true, dstRoute);
 
                             }
 
@@ -445,11 +563,17 @@
             
             /**
              * Alerting box;
+             * @param {type} msg
              * @param {type} isNeedToReload
+             * @param {type} dstRoute
              */
-            function alerting (msg,isNeedToReload) {
+            function alerting (msg,isNeedToReload, dstRoute) {
                 alert(msg);
-                window.location.reload(isNeedToReload);
+                if (null == dstRoute) {
+                    window.location.reload(isNeedToReload);
+                    return;
+                }
+                window.location = dstRoute;
             }
             
             /**
@@ -472,10 +596,44 @@
             */
             function getCategoryFormItems () {
                 return {
-                    name                    : true,
+                    category_name           : true,
                     category_description    : true,
                     category_img            : true
                 };
+            }
+            
+            /**
+            * Get Products form item;
+             */
+            function getProductFormItems () {
+                return {
+                    product_name        : true,
+                    deskripsi           : true,
+                    purchase            : true,
+                    stock               : true,
+                    sell                : true,
+                    product_image       : true
+                    
+                }
+            }
+            
+            /**
+            * Fill category dropdowns
+             */
+            function fillCategoriesDropdown (categories) {
+                
+                var categoryDropdown = $("[name='category']");
+                
+                if (categories.length > 0) {
+                    
+                    $.each(categories, function(key,category) {
+                        categoryDropdown.append($("<option />").val(category.id).text(category.name));
+                    });
+                    
+                    return;
+                }
+                
+                showErrorField('category','Empty Category. Please add certain category before to add new product.');
             }
             
         });

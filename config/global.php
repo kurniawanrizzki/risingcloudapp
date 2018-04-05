@@ -20,6 +20,7 @@ return [
     'CASHIER_ROLE_ID' => 1,
     
     //OTHER
+    'DEFAULT_IMAGE' => 'noimage.png',
     'APPLIED_CURRENCY'=>"IDR ",
     'USERS_COLUMNS_TITLE' => [
         'ID','ID KASIR','ROLE','NOMOR TELEPON','ALAMAT','PERALATAN'

@@ -45,6 +45,17 @@ class AppServiceProvider extends ServiceProvider
             return false;
         }, Lang::get('id.old_password_not_validated_msg'));
         
+        Validator::extend('greater_than_field', function($attribute, $value, $parameters, $validator) {
+            $min_field = $parameters[0];
+            $data = $validator->getData();
+            $min_value = $data[$min_field];
+            return $value > $min_value;
+        });   
+
+        Validator::replacer('greater_than_field', function($message, $attribute, $rule, $parameters) {
+            return str_replace(':field', $parameters[0], $message);
+        });
+        
     }
 
     /**
@@ -348,14 +359,14 @@ class AppServiceProvider extends ServiceProvider
 
                 ?>
 
-                    {!! Form::hidden('user_id','',['class'=>'form-control']) !!}
+                    {!! Form::hidden('product_id','',['class'=>'form-control']) !!}
 
                 <?php
                 }   
                 ?>
-                <div class='form-group name-group'>
-                    {!! Form::label('', '', ['class'=>'control-label name_error_label', 'for'=>'inputError','hidden' => '']) !!}
-                    {!! Form::text('name','',['class'=>'form-control name_error_field','placeholder'=> trans('id.product_name_text')]) !!}
+                <div class='form-group product_name-group'>
+                    {!! Form::label('', '', ['class'=>'control-label product_name_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('product_name','',['class'=>'form-control product_name_error_field','placeholder'=> trans('id.product_name_text')]) !!}
                 </div>
                 
                 <div class='form-group category-group'>
@@ -368,6 +379,11 @@ class AppServiceProvider extends ServiceProvider
                     {!! Form::textarea('deskripsi','',['class'=>'form-control deskripsi_error_field','rows'=>'3','placeholder'=> trans('id.product_description_text')]) !!}
                 </div>
 
+                <div class='form-group stock-group'>
+                    {!! Form::label('', '', ['class'=>'control-label stock_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('stock','',['class'=>'form-control stock_error_field','placeholder'=> trans('id.stock_text')]) !!}
+                </div>
+                
                 <div class='form-group purchase-group'>
                     {!! Form::label('', '', ['class'=>'control-label purchase_error_label', 'for'=>'inputError','hidden' => '']) !!}
                     {!! Form::text('purchase','',['class'=>'form-control purchase_error_field','placeholder'=> trans('id.purchase_text')]) !!}
@@ -384,11 +400,6 @@ class AppServiceProvider extends ServiceProvider
                         {!! Form::label('', '', ['class'=>'control-label product_image_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
                         {!! Form::file('product_image','',['class'=>'form-control product_image_error_field']) !!}
                     </div>
-                </div>
-
-                <div class='form-group product_image-group'>
-                    {!! Form::label('', '', ['class'=>'control-label product_image_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
-                    {!! Form::file('product_image','',['class'=>'form-control product_image_error_field']) !!}
                 </div>
 
             {!! Form::submit(
@@ -419,14 +430,14 @@ class AppServiceProvider extends ServiceProvider
 
                 ?>
 
-                    {!! Form::hidden('user_id','',['class'=>'form-control']) !!}
+                    {!! Form::hidden('category_id','',['class'=>'form-control']) !!}
 
                 <?php
                 }   
                 ?>
-                <div class='form-group name-group'>
-                    {!! Form::label('', '', ['class'=>'control-label name_error_label', 'for'=>'inputError','hidden' => '']) !!}
-                    {!! Form::text('name','',['class'=>'form-control name_error_field','placeholder'=> trans('id.category_name_text')]) !!}
+                <div class='form-group category_name-group'>
+                    {!! Form::label('', '', ['class'=>'control-label category_name_error_label', 'for'=>'inputError','hidden' => '']) !!}
+                    {!! Form::text('category_name','',['class'=>'form-control category_name_error_field','placeholder'=> trans('id.category_name_text')]) !!}
                 </div>
 
                 <div class='form-group category_description-group'>
@@ -434,10 +445,13 @@ class AppServiceProvider extends ServiceProvider
                     {!! Form::textarea('category_description','',['class'=>'form-control category_description_error_field','rows'=>'3','placeholder'=> trans('id.category_description_text')]) !!}
                 </div>
                 
+                <div class='form-group'>
+                    {!! Form::label('category_img', \Lang::get('id.upload_image_text'), ['class'=>'control-label', 'for'=>'inputError']) !!}
                     <div class='form-group category_img-group'>
                         {!! Form::label('', '', ['class'=>'control-label category_img_error_label', 'for'=>'inputError', 'hidden' => '']) !!}
                         {!! Form::file('category_img','',['class'=>'form-control category_img_error_field']) !!}
                     </div>
+                </div>
 
             {!! Form::submit(
             $routeForm == \Config::get('global.CATEGORY_ADD_ACTION')?trans('id.form_create_text'):trans('id.form_edit_text'), 

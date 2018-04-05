@@ -29,8 +29,14 @@ class CategoryController extends Controller
         );
     }
     
-    public function update () {
+    public function update (CategoryRequest $request) {
+        $parameter = $this->buildRequestParameters($request);
+        Category::where('id',$parameter['id'])->update($parameter);
         
+        return $this->buildResponses(
+                Config::get('global.HTTP_SUCCESS_CODE'), 
+                Lang::get('id.success_updated_msg')
+        );
     }
     
     /**
@@ -67,8 +73,15 @@ class CategoryController extends Controller
     
     protected function buildRequestParameters (CategoryRequest $request) {
 
+        $img = Config::get('global.DEFAULT_IMAGE');
+        
+        if (isset($request->category_id)) {
+            $parameter['id'] = $request->category_id;
+            $img = Category::select('img')->where('id',$request->category_id)->get()[0]->img;
+        }
+        
         $parameter = [
-            'name' => $request->name,
+            'name' => $request->category_name,
             'description' => $request->category_description,
             'created_by' => Session::get('id')
         ];
@@ -80,12 +93,11 @@ class CategoryController extends Controller
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->move($path, $filename);
             
-            $parameter['img'] = $filename;
+            $img = $filename;
+            
         }
         
-        if (isset($request->user_id)) {
-            $parameter['id'] = $request->user_id;
-        }
+        $parameter['img'] = $img;
         
         return $parameter;
         

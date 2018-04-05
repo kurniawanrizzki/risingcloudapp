@@ -44,6 +44,7 @@
         'product_description_text' => 'Deskripsi Produk',
         'purchase_text'=> 'Harga Beli',
         'sell_text'=>'Harga Jual',
+        'stock_text'=>'Stok',
         'upload_image_text'=> 'Unggah Gambar Produk',
         'product_create_form_title_text' => 'Form Tambah Produk',
         'product_edit_form_title_text' => 'Form Ubah Produk',
@@ -88,6 +89,7 @@
         'old_password_not_validated_msg' => 'The :attribute field is not validated.',
         'data_not_found_msg' => 'DATA TIDAK DITEMUKAN.',
         'move_product_msg' => 'Kategori :name tidak dapat dihapus. Pastikan kategori :name tidak mempunyai produk.',
+        'file_large_error_msg' => 'File size of :file_input too large.',
         
         //general
         'cancel_text' => 'Batalkan',

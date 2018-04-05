@@ -37,7 +37,7 @@
 	</div>
         
         @if(isset($alert) || \Session::has('alert'))
-
+       
         <div class="row">
             <div class='col-md-12 alert {{ !isset($alert)?
                 (\Session::get('alert')->responseJSON->status == 200?'alert-success':'alert-danger'):
@@ -54,7 +54,7 @@
         @endif 
         
         <div class="row-fluid">
-            
+
             @if(isset($products))
             
                 @foreach ($products as $key => $data)
@@ -64,7 +64,7 @@
                                 {{ "PROD".str_pad($data->id, 6, "0", STR_PAD_LEFT) ." - ". $data->name }}
                             </div>
                             <div class="panel-body" style="height: 250px;">
-                                <img src='{{ null != $data->img ? $data->img : asset('dist/img/noimage.png') }}' class='img-responsive' style="width:30%;margin-bottom:5px"/>
+                                <img src='{{ asset('img/'.$data->img) }}' class='img-responsive' style="width:30%;margin-bottom:5px"/>
                                 <p class="rs-ellipsis">
                                     {{ $data->description }}
                                 </p>

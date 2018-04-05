@@ -39,6 +39,7 @@ class RisingCloudSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Liquid',
                 'description'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet tristique enim. Pellentesque nec accumsan risus.",
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -46,6 +47,7 @@ class RisingCloudSeeder extends Seeder
                 'id' => 2,
                 'name' => 'Components',
                 'description'=> "Nam dolor ex, varius vel vestibulum sit amet, elementum id velit. Etiam ante enim, varius dapibus massa non, fringilla egestas elit.",
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -53,6 +55,7 @@ class RisingCloudSeeder extends Seeder
                 'id' => 3,
                 'name' => 'Electric Cigaretes',
                 'description'=> "Pellentesque sollicitudin nunc eu magna pharetra posuere. Sed porttitor mauris interdum sit amet.",
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ]
@@ -67,6 +70,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 99000,
                 'sell' => 125000,
                 'stock' => 5,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -78,6 +82,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 65000,
                 'sell' => 100000,
                 'stock' => 8,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -89,6 +94,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 89000,
                 'sell' => 120000,
                 'stock' => 10,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -100,6 +106,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 140000,
                 'sell' => 200000,
                 'stock' => 10,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -111,6 +118,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 100000,
                 'sell' => 160000,
                 'stock' => 3,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -122,6 +130,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 175000,
                 'sell' => 225000,
                 'stock' => 2,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -133,6 +142,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 499000,
                 'sell' => 600000,
                 'stock' => 3,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -144,6 +154,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 390000,
                 'sell' => 450000,
                 'stock' => 5,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -155,6 +166,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 250000,
                 'sell' => 400000,
                 'stock' => 2,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -166,6 +178,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 279000,
                 'sell' => 345000,
                 'stock' => 1,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -177,6 +190,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 330000,
                 'sell' => 440000,
                 'stock' => 5,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -188,6 +202,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 100000,
                 'sell' => 200000,
                 'stock' => 4,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -199,6 +214,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 400000,
                 'sell' => 499000,
                 'stock' => 5,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -210,6 +226,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 299000,
                 'sell' => 349000,
                 'stock' => 10,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -221,6 +238,7 @@ class RisingCloudSeeder extends Seeder
                 'purchase' => 219000,
                 'sell' => 400000,
                 'stock' => 5,
+                'img' =>'noimage.png',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ]

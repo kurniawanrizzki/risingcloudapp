@@ -52,7 +52,7 @@
                     <div class="col-md-3">
                         <div class="rs-img-frame">
                             <a href="{{ route('dashboard.product.view',$data->id) }}">
-                                <img src='{{ null != $data->img ? asset('/img/'.$data->img) : asset('dist/img/noimage.png') }}' class='img-responsive' alt='{{ $data->name }}'/>
+                                <img src='{{ asset('img/'.$data->img) }}' class='img-responsive' alt='{{ $data->name }}'/>
                             </a>
                             <div class="overlay">
                                 <h4>{{ $data->name }}</h4>
@@ -63,7 +63,7 @@
                                 @if(\Session::get('role') === \Config::get('global.ADMIN_ROLE_ID'))
                                     <div class="pull-right">
 
-                                        <button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#" data-backdrop="static" data-keyboard="false" data-edit="{{ $data }}"><i class="fa fa-pencil fa-fw"></i></button>
+                                        <button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#category-edit-form" data-backdrop="static" data-keyboard="false" data-edit="{{ $data }}"><i class="fa fa-pencil fa-fw"></i></button>
                                         <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delete-alert" data-backdrop="static" data-keyboard="false" data-id="{{ $data->id }}"><i class="fa fa-trash-o fa-fw"></i></button>
 
                                     </div>

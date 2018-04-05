@@ -21,7 +21,7 @@ Route::group ([
     
     Route::get('/', ['as'=>'dashboard.index','uses'=>'CategoryController@index']);
     Route::post('/add',['as'=>'dashboard.add','uses'=>'CategoryController@create']);
-    Route::post('/edit',['as'=>'dashboard.edit']);
+    Route::post('/edit',['as'=>'dashboard.edit', 'uses'=>'CategoryController@update']);
     Route::get('/{id}/delete',['as'=>'dashboard.delete', 'uses'=>'CategoryController@delete']);
     
     Route::group([
@@ -32,8 +32,8 @@ Route::group ([
             });
         
             Route::get('{categoryProduct}/view',['as'=>'dashboard.product.view', 'uses'=>'ProductController@view']);
-            Route::post('/add',['as'=>'dashboard.product.add']);
-            Route::post('/edit',['as'=>'dashboard.product.edit']);
+            Route::post('/add',['as'=>'dashboard.product.add', 'uses'=>'ProductController@create']);
+            Route::post('/edit',['as'=>'dashboard.product.edit', 'uses'=>'ProductController@update']);
             Route::get('/{id}/delete',['as'=>'dashboard.product.delete', 'uses'=>'ProductController@delete']);
         
     });
