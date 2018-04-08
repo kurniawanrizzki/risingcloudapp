@@ -8,6 +8,10 @@
 
 return [
     
+    //Information Store
+    'STORE_NAME' => 'RISINGCLOUD VAPE STORE',
+    'STORE_ADDRESS' => 'JL. Karbela 3 Jakarta Selatan',
+    
     //ERROR CODE
     'USERNAME_NOT_FOUND_ERROR' => 0,
     'PASSWORD_NOT_MATCHED_ERROR' => 1,
@@ -24,6 +28,26 @@ return [
     'APPLIED_CURRENCY'=>"IDR ",
     'USERS_COLUMNS_TITLE' => [
         'ID','ID KASIR','ROLE','NOMOR TELEPON','ALAMAT','PERALATAN'
+    ],
+    'TRANSACTIONS_COLUMNS_TITLE' => [
+        'TRANSAKSI ID','KASIR','TANGGAL PENJUALAN','SUB TOTAL','PERALATAN'
+    ],
+    'TRANSACTION_DETAILS_COLUMNS_TITLE' => [
+        'PRODUK ID','NAMA PRODUK','BANYAK ITEM'
+    ],
+    'STRUK' => [
+        0 => [
+            'NAMA','60px'
+        ],
+        1 => [
+            'QTY', '20px'
+        ],
+        2 => [
+            'HARGA', '40px'
+        ],
+        3 => [
+            'TOTAL','40px'
+        ]
     ],
     'USER_ADD_ACTION' => 0,
     'USER_EDIT_ACTION' => 1,

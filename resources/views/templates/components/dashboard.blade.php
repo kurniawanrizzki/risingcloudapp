@@ -8,7 +8,11 @@
 @section("content")
 
     <div id="wrapper">
-        @yield("dashboard.sidebar")
+        
+        @if(\Route::currentRouteName() !== 'dashboard.transaction.index')
+            @yield("dashboard.sidebar")
+        @endif
+        
         @yield("dashboard.content")
     </div>
 

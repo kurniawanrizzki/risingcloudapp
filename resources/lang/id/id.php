@@ -55,9 +55,14 @@
         'category_text'=>'Kategori',
         
         //transaction
+        'product_transaction_title_txt' => 'Produk',
+        'detail_transaction_title_txt' => 'Detail Transaksi',
+        'total_transaction_title_txt' => 'Total Transaksi',
+        'search_txt' => 'Filter',
         
         //user
         'users_list_text' => 'Daftar Pengguna',
+        'report_list_text' => 'Daftar Transaksi',
         'create_form_title_text' => 'Form Tambah Pengguna',
         'edit_form_title_text' => 'Form Ubah Pengguna',
         'edit_form_change_password_text' => 'Form Ubah Sandi Pengguna',
@@ -77,7 +82,7 @@
         'username_not_found_msg' => 'ID KASIR TIDAK DITEMUKAN, SILAHKAN UNTUK MENCOBA LAGI.',
         'password_not_matched_msg' => 'SANDI YANG ANDA MASUKKAN TIDAK SESUAI, SILAHKAN UNTUK MENCOBA LAGI.',
         'end_session_msg' => 'SESSION ANDA TELAH BERAKHIR, SILAHKAN LOGIN KEMBALI UNTUK DAPAT MENGAKSES '.env('APP_NAME'),
-        'out_of_stock_msg' => 'ITEM KOSONG',
+        'out_of_stock_msg' => 'ITEM KOSONG / HABIS.',
         'back_msg' => 'Apakah anda yakin akan membatalkan pengisian/pengubahan data?',
         'delete_msg' => 'Apakah anda yakin akan menghapus data ini? ',
         'success_inserted_msg' => 'Data berhasil dimasukkan.',
@@ -96,7 +101,8 @@
         'delete_text' => 'Hapus',
         'understand_text' => 'Mengerti',
         'back_text'=> 'Kembali',
-        'confirmation_text' => 'Konfirmasi'
+        'confirmation_text' => 'Konfirmasi',
+        'thank_you_text' => 'Terima Kasih Atas Kunjungan Anda.'
         
     ];
 

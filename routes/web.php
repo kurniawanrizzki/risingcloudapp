@@ -41,6 +41,12 @@ Route::group ([
     Route::group ([
         'prefix'=>'transaction'], function () {
         
+        Route::get('/', ['as'=>'dashboard.transaction.index','uses'=>'TransactionController@index']);
+        Route::post('/', ['as'=>'dashboard.transaction.add','uses'=>'TransactionController@create']);
+        Route::get('/report', ['as'=>'dashboard.transaction.view','uses'=>'TransactionController@view']);
+        Route::get('/{id}/printing',['as'=>'dashboard.transaction.print', 'uses'=>'TransactionController@printing']);
+
+        
     }); 
     
     Route::group ([

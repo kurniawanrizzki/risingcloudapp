@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('img', 300)->nullable();
             $table->string('description')->nullable();
-            $table->float('purchase');
-            $table->float('sell');
+            $table->float('purchase',12,0);
+            $table->float('sell',12,0);
             $table->integer('stock');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

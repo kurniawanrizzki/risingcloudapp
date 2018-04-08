@@ -46,7 +46,6 @@ body {
 .rs-ellipsis {
     white-space: nowrap; 
     width: 100%;
-    margin: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

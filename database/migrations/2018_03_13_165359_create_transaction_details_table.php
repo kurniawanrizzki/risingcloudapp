@@ -17,7 +17,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->increments('id');
             $table->integer('tran_id')->unsigned();
             $table->integer('product_id')->unsigned();
-            $table->integer('status');
+            $table->integer('counted');
             $table->foreign('tran_id')->references('id')->on('transactions');
             $table->foreign('product_id')->references('id')->on('products');
         });

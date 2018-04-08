@@ -47,7 +47,7 @@
                             @if(\Session::get('role') == \Config::get('global.ADMIN_ROLE_ID'))
                     
                                 <li>
-                                    <a href="#"><i class="fa fa-files-o fa-fw"></i>
+                                    <a href="{{ route('dashboard.transaction.view') }}"><i class="fa fa-files-o fa-fw"></i>
                                         {{ trans('id.report_title') }}
                                     </a>
                                 </li>
@@ -55,7 +55,7 @@
                             @endif
                             
                             <li>
-                                <a href="#"><i class="fa fa-barcode fa-fw"></i>
+                                <a href="{{ route('dashboard.transaction.index') }}"><i class="fa fa-barcode fa-fw"></i>
                                     {{ trans('id.cashier_title') }}
                                 </a>
                             </li>
