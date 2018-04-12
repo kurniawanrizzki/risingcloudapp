@@ -85,7 +85,7 @@ class ProductController extends Controller
         );
 
         if (null != $product) {
-
+            $categoryId = $product->category_id;
             $product->delete();
             $responseJSON = $this->buildResponses(
                     Config::get('global.HTTP_SUCCESS_CODE'), 
@@ -94,7 +94,7 @@ class ProductController extends Controller
 
         }
         
-        return redirect()->route('dashboard.product.index')->with('alert',$responseJSON->getData()); 
+        return redirect()->route('dashboard.product.view',$categoryId)->with('alert',$responseJSON->getData()); 
     }
     
     protected function buildRequestParameters (ProductRequest $request) {

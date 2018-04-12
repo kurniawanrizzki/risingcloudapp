@@ -14,16 +14,22 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="col-md-2  pull-right">
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.form_create_text') }}
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" data-target="#product-add-form" data-backdrop="static" data-keyboard="false">{{ trans('id.new_product_text') }}</a></li>
-                            <li><a data-toggle="modal" data-target="#category-add-form" data-backdrop="static" data-keyboard="false">{{ trans('id.new_category_text') }}</a></li>
-                        </ul>
+                
+                @if(\Session::get('role') == \Config::get('global.ADMIN_ROLE_ID'))
+
+                    <div class="col-md-2  pull-right">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.form_create_text') }}
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a data-toggle="modal" data-target="#product-add-form" data-backdrop="static" data-keyboard="false">{{ trans('id.new_product_text') }}</a></li>
+                                <li><a data-toggle="modal" data-target="#category-add-form" data-backdrop="static" data-keyboard="false">{{ trans('id.new_category_text') }}</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+
+                @endif
+                
             </div>
             <hr>
         </div>
@@ -61,7 +67,7 @@
                                 </p>
 
                                 @if(\Session::get('role') === \Config::get('global.ADMIN_ROLE_ID'))
-                                    <div class="pull-right">
+                                    <div class="pull-right" style="padding-top: 10px;">
 
                                         <button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#category-edit-form" data-backdrop="static" data-keyboard="false" data-edit="{{ $data }}"><i class="fa fa-pencil fa-fw"></i></button>
                                         <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delete-alert" data-backdrop="static" data-keyboard="false" data-id="{{ $data->id }}"><i class="fa fa-trash-o fa-fw"></i></button>

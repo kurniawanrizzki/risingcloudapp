@@ -11,30 +11,28 @@
         </div>
         
 	<div class="row">
-            <div class="col-md-6 col-md-offset-7">
-                <div class="col-md-4">
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.filter_according_to_text') }}
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="?orderBy=stock&sortBy=desc">{{ trans('id.max_stock_text') }}</a></li>
-                            <li><a href="?orderBy=stock&sortBy=asc">{{ trans('id.min_stock_text') }}</a></li>
-                            <li><a href="?orderBy=sell&sortBy=desc">{{ trans('id.max_price_text') }}</a></li>
-                            <li><a href="?orderBy=sell&sortBy=asc">{{ trans('id.min_price_text') }}</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="input-group col-md-6">
-                    {!! Form::text('search','',['class'=>'form-control input-sm','placeholder'=> trans('id.search_product_text')]) !!}
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary btn-sm" type="button" id="search_btn">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </span>
-                </div>
+            <div class="col-md-6">
+              <div class="btn-group pull pull-right">
+                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.filter_according_to_text') }}
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                      <li><a href="?orderBy=stock&sortBy=desc">{{ trans('id.max_stock_text') }}</a></li>
+                      <li><a href="?orderBy=stock&sortBy=asc">{{ trans('id.min_stock_text') }}</a></li>
+                      <li><a href="?orderBy=sell&sortBy=desc">{{ trans('id.max_price_text') }}</a></li>
+                      <li><a href="?orderBy=sell&sortBy=asc">{{ trans('id.min_price_text') }}</a></li>
+                  </ul>
+              </div>
             </div>
-            <hr>
+            <div class="input-group col-md-6">
+              {!! Form::text('search','',['class'=>'form-control input-sm','placeholder'=> trans('id.search_product_text')]) !!}
+              <span class="input-group-btn">
+                  <button class="btn btn-primary btn-sm" type="button" id="search_btn">
+                      <i class="glyphicon glyphicon-search"></i>
+                  </button>
+              </span>
+            </div>
 	</div>
+        <hr>
         
         @if(isset($alert) || \Session::has('alert'))
        
@@ -68,26 +66,31 @@
                                 <p class="rs-ellipsis">
                                     {{ $data->description }}
                                 </p>
-                                <p>
-                                    <div class="btn-group">
-                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.tools_text') }}
-                                        <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a data-toggle='modal' data-target='#product-edit-form' data-backdrop='static' data-keyboard='false' data-edit='{{ $data }}'>{{ trans('id.edit_text') }}</a></li>
-                                            <li><a data-toggle='modal' data-target='#delete-alert' data-backdrop='static' data-keyboard='false' data-id='{{ $data->id }}'  style="color:red">{{ trans('id.delete_text') }}</a></li>
-                                        </ul>
-                                    </div>
-                                </p>
+                                
+                                @if(\Session::get('role') == \Config::get('global.ADMIN_ROLE_ID'))
+
+                                    <p>
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"> {{ trans('id.tools_text') }}
+                                            <span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a data-toggle='modal' data-target='#product-edit-form' data-backdrop='static' data-keyboard='false' data-edit='{{ $data }}'>{{ trans('id.edit_text') }}</a></li>
+                                                <li><a data-toggle='modal' data-target='#delete-alert' data-backdrop='static' data-keyboard='false' data-id='{{ $data->id }}'  style="color:red">{{ trans('id.delete_text') }}</a></li>
+                                            </ul>
+                                        </div>
+                                    </p>
+
+                                @endif
+
                             </div>
                             <div class="panel-footer">
                                 <p {{ $data->stock > 0 ?'':'style=color:red'}}>
                                     {{ \Config::get('global.APPLIED_CURRENCY').number_format($data->sell, 2) }}
+                                    &nbsp; 
+                                    @if($data->stock == 0)
+                                        <i>{{ "( ".trans('id.out_of_stock_msg')." )" }}</i>
+                                    @endif
                                 </p>
-                                @if($data->stock == 0)
-                                    <p style="color:red">
-                                        <i>{{ trans('id.out_of_stock_msg') }}</i>
-                                    </p>
-                                @endif
                             </div>
                         </div>
                     </div>

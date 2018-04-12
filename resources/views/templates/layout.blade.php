@@ -110,12 +110,12 @@
                 
                 if (route === 'dashboard.user') {
                     url = '/dashboard/user/'+deleteId+'/delete';
-                } else if (route === 'dashboard.product.index') {
+                } else if (route === 'dashboard.product.view') {
                     url = '/dashboard/product/'+deleteId+'/delete';                    
                 } else if (route === 'dashboard.index') {
                     url = '/dashboard/'+deleteId+'/delete';                    
                 }
-                
+         
                 confirmedButton.attr('href', url);
                 
             });
@@ -504,12 +504,20 @@
                 userFormAJAXRequest($(this),"{{ route('dashboard.user.edit') }}", map,0);
             });
             
-            $('#user-own-form-canceled').click(function() {
+            $('#user-canceled-own-filled-form-2').click(function() {
                 $('#content-profile').text("")
 
                 $('#profile_password_btn').removeAttr('data-id');
                 $('#profile_edit_btn').removeAttr('data-edit');
                 $('#user-own-form').modal('hide');
+            
+            });
+            
+            $('#user-own-password-form-canceled').click(function() {
+                var map = getUserFormItems();
+                resetErrorField(map, true);
+                
+                $('#user-own-password-form').modal('hide');
             
             });
             
@@ -732,6 +740,7 @@
                             var msg     = response.message;
 
                             if (status == 200) {
+                                var isNeedToReload = true;
                                 resetErrorField(mapper, true);
 
                                 // check which the modal that is displayed currently;
@@ -746,6 +755,7 @@
                                     $("[name='user_id']").val(""); 
                                     $('#user-password-form').modal('hide');                                        
                                 } else if ($('#product-add-form').hasClass('in')) {
+                                    isNeedToReload = !isNeedToReload;
                                     $('#product-add-form').modal('hide');
                                     var categoryId = $("select[name = 'category']").val();
                                     dstRoute = '/dashboard/product/'+categoryId+'/view';
@@ -759,7 +769,7 @@
                                     $('#category-edit-form').modal('hide');                                       
                                 }
 
-                                alerting(msg,true, dstRoute);
+                                alerting(msg,isNeedToReload, dstRoute);
 
                             }
 

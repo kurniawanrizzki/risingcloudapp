@@ -75,16 +75,16 @@ class CategoryController extends Controller
 
         $img = Config::get('global.DEFAULT_IMAGE');
         
-        if (isset($request->category_id)) {
-            $parameter['id'] = $request->category_id;
-            $img = Category::select('img')->where('id',$request->category_id)->get()[0]->img;
-        }
-        
         $parameter = [
             'name' => $request->category_name,
             'description' => $request->category_description,
             'created_by' => Session::get('id')
         ];
+        
+        if (isset($request->category_id)) {
+            $parameter['id'] = $request->category_id;
+            $img = Category::select('img')->where('id',$request->category_id)->get()[0]->img;
+        }
         
         if( $request->hasFile('category_img')) {
         

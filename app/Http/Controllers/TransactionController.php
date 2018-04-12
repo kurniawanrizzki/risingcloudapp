@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 
 class TransactionController extends Controller
 {
@@ -81,7 +83,10 @@ class TransactionController extends Controller
                 ->get();
         
         if (sizeof($struk) > 0) {
-            return view('pages/struk',['struk'=>$struk]);
+             
+            $this->printout($struk);
+           
+            return redirect()->route('dashboard.transaction.index');
         }
         
         return abort(404);
@@ -153,6 +158,105 @@ class TransactionController extends Controller
         }
         
         return $report;
+        
+    }
+    
+    protected function printout ($struk) {
+        
+        $connector = new FilePrintConnector(env("PRINTER_CONNECTION"));
+
+        $logo = EscposImage::load(asset('img/roundlogo.jpg'), false);
+        $printer = new Printer($connector);
+
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> graphics($logo);
+
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> text(Config::get('global.STORE_NAME').'\n');
+        $printer -> selectPrintMode();
+        $printer -> text(Config::get('global.STORE_ADDRESS').'\n');     
+        $printer -> feed();
+
+        $printer -> setEmphasis(true);
+        $printer -> text("STRUK PEMBELIAN\n");
+        $printer -> setEmphasis(false);
+
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> setEmphasis(true);
+        $printer -> text(new Item('Nama','Qty','Harga','Sub Total'));
+        $printer -> setEmphasis(false);
+
+
+        foreach ($struk as $key => $item) {
+            $printer->text(new Item(
+                    $item->product_name,
+                    $item->counted,
+                    Config::get('global.APPLIED_CURRENCY').number_format($item->sell,2)
+                    )
+            );
+        }
+
+        $printer -> feed();
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> text(new Item('Total','',Config::get('global.APPLIED_CURRENCY').number_format($struk[0]->amount,2),true));
+        $printer -> text(new Item('Bayar','',Config::get('global.APPLIED_CURRENCY').number_format($struk[0]->cash,2),true));
+        $printer -> text(new Item('Kembali','',Config::get('global.APPLIED_CURRENCY').number_format($struk[0]->remained,2),true));
+        $printer -> selectPrintMode();
+
+        /* Footer */
+        $printer -> feed(2);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text(Lang::get('id.thank_you_text')."\n");
+        $printer -> feed(2);
+        $printer -> text($struk[0]->created_at . "\n");
+
+        $printer -> cut();
+        $printer -> pulse();
+
+        $printer -> close();
+        
+    }
+    
+}
+
+class Item {
+    private $name;
+    private $qty;
+    private $price;
+    private $isNotKindOfItem;
+    
+    public function __construct(
+            $name = '',
+            $qty = '',
+            $price = '',
+            $isNotKindOfItem = false
+            ) {
+        
+        $this->name = $name;
+        $this->qty = $qty;
+        $this->price = $price;
+        $this->isNotKindOfItem = $isNotKindOfItem;
+        
+    }
+    
+    public function __toString() {
+        $widthCols = [32,8,20,20];
+        
+        if ($this->isNotKindOfItem) {
+            $widthCols[0] = ($widthCols[0]+$widthCols[1])/2 - $widthCols[1];
+            $widthCols[2] = 40;
+        }
+        
+        $firstCol = str_pad($this->name, $widthCols[0]);        
+        $secondCol = str_pad($this->qty, $widthCols[1],' ',STR_PAD_BOTH);
+        $thirdCol = str_pad($this->price, $widthCols[2],' ',STR_PAD_LEFT);
+        
+        if ($qty != '') {
+            $fourthCol = str_pad(($this->qty*$this->price),$widthCols[3],' ',STR_PAD_LEFT);
+        }
+
+        
+        return "$firstCol$secondCol$thirdCol$fourthCol\n";
         
     }
     

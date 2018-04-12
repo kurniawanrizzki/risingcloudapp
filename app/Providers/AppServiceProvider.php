@@ -246,7 +246,7 @@ class AppServiceProvider extends ServiceProvider
                     </div>
                 
                     {!! Form::submit(
-                        trans('id.form_user_edit_text'), 
+                        trans('id.form_edit_text'), 
                         ['class'=>'btn btn-lg btn-success btn-block']) 
                     !!}
             
@@ -480,7 +480,10 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function isNeedClosedButton ($idAlert, $isNeed) {
         if ($isNeed) {
-            return "<button type='button' class='close' data-target='#".$idAlert."' data-toggle='modal' aria-hidden='true' data-backdrop='static' data-keyboard='false'>&times;</button>";
+            if ($idAlert != "user-canceled-own-filled-form") {
+                return "<button type='button' class='close' data-target='#".$idAlert."' data-toggle='modal' aria-hidden='true' data-backdrop='static' data-keyboard='false'>&times;</button>";
+            }
+            return "<button type='button' class='close' id='user-canceled-own-filled-form-2' aria-hidden='true' data-backdrop='static' data-keyboard='false'>&times;</button>";
         }
         return "";
     }

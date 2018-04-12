@@ -87,12 +87,10 @@
                                                                 <div class="panel-footer">
                                                                     <p {{ $item->stock > 0 ?'':'style=color:red'}}>
                                                                         {{ \Config::get('global.APPLIED_CURRENCY').number_format($item->sell, 2) }}
+                                                                        @if($item->stock == 0)
+                                                                            {{ '( '.trans('id.out_of_stock_msg').' )' }}
+                                                                        @endif
                                                                     </p>
-                                                                    @if($item->stock == 0)
-                                                                        <p style="color:red">
-                                                                            <i>{{ trans('id.out_of_stock_msg') }}</i>
-                                                                        </p>
-                                                                    @endif
                                                                 </div>
 
                                                             </div>
