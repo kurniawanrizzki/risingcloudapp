@@ -48,7 +48,22 @@
             
         </div>
         
-        <div class="row">
+        <div class="row" id="transaction_total_result" style="display:none;">
+            <div class="col-md-2">
+                <h4>Total Transaksi</h4>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <i id="total_output"></i>
+                </h4>
+            </div>
+            <div class="col-md-1">
+                <meta name="csrf-token" content="{{ csrf_token() }}">
+                <a type="button" class="btn btn-outline btn-primary btn-circle" style="margin-top: 5px;" id="download_report_id"><i class="fa fa-download fa-fw"></i></a>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12">
                 <div class="panel panel-primary">
                 
@@ -68,7 +83,7 @@
                             </thead>
                             <tbody>
                                 
-                                @foreach ($report as $key => $data)
+                                @foreach ($report['item'] as $key => $data)
            
                                 <tr>
                                     <td> {{ "TRAN".str_pad($data['id'], 6, "0", STR_PAD_LEFT) }} </td>

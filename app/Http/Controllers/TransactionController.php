@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Category;
 use App\Transaction;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\TransactionDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Mike42\Escpos\EscposImage;
@@ -92,6 +94,34 @@ class TransactionController extends Controller
         return abort(404);
     }
     
+    public function download () {
+        
+        $response =  $this->buildResponses(
+                Config::get('global.HTTP_INTERNAL_ERROR_CODE'), 
+                Lang::get('id.internal_error_msg')
+        );
+        
+        $parameters = json_decode(Input::get('parameters',''));
+        
+        if (sizeof($parameters) > 0) {
+            if (isset($parameters->_token) && !empty($parameters->_token)) {
+                if (!empty($parameters->start) || !empty($parameters->end)){
+                    
+                    $report = $this->buildTransactionsReport($parameters->start, $parameters->end);
+
+                    if (sizeof($report) > 0) {
+                        $pdf = PDF::loadView('templates.components.file', ['report'=>$report]);
+                        $pdf->setPaper('a4', 'landscape')->setWarnings(false);
+                        return $pdf->download();
+                    }
+                    
+                }
+            }
+        }
+        
+        return $response;
+    }
+        
     protected function updateStock ($productId, $counted) {
         $product = Product::find($productId);
         $result = $product->stock - $counted;
@@ -132,31 +162,49 @@ class TransactionController extends Controller
         
     }
     
-    protected function buildTransactionsReport () {
+    protected function buildTransactionsReport ($start = '', $end = '') {
         
+        $total = 0;
         $report = [];
         
-        $transactions = Transaction::join('users','transactions.created_by','=','users.id')
-                ->select('transactions.id','transactions.amount','users.username as reported', 'transactions.created_at')->get();
+        $transactions = Transaction::join('users','transactions.created_by','=','users.id');
+        
+        if (!empty($start)) {
+            $transactions->whereRaw('DATE(transactions.created_at) >= ?',$start);
+        } 
+        
+        if (!empty($end)) {
+            $transactions->whereRaw('DATE(transactions.created_at) <= ?',$end);            
+        }
+        
+        $transactions = $transactions
+                ->select('transactions.id','transactions.amount','users.username as reported', 'transactions.created_at')
+                ->get();
         
         foreach ($transactions as $key => $value) {
+            
+            $total += $value->amount;
             
             $transactionDetails = TransactionDetail::join('products','products.id','=','transaction_details.product_id')->where('transaction_details.tran_id','=',$value->id)
                     ->select('products.id','products.name','transaction_details.counted')->get();
             
             if (sizeof($transactionDetails) > 0) {
                 
-                $report[$key] = $value->getOriginal();
-                $report[$key]['details'] = [];
+                $report['item'][$key] = $value->getOriginal();
+                $report['item'][$key]['details'] = [];
 
                 foreach ($transactionDetails as $kp => $vp) {
-                    $report[$key]['details'][$kp] = $vp->getOriginal();
+                    $report['item'][$key]['details'][$kp] = $vp->getOriginal();
                 }
                 
             }
                         
         }
         
+        if ($total > 0) {
+            $report['total_transactions'] = $total;
+        }
+
         return $report;
         
     }

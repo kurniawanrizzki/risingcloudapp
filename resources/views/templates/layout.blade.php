@@ -30,7 +30,7 @@
         
         <!-- DataTables CSS -->
         <link href="{{ asset('dist/vendor/datatables-plugins/dataTables.bootstrap.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('dist/vendor/datepicker/css/bootstrap-datepicker.css') }}"/>
+        <link href="{{ asset('dist/vendor/datepicker/css/bootstrap-datepicker.css') }}"rel="stylesheet"/>
 
         <!-- DataTables Responsive CSS -->
         <link href="{{ asset('dist/vendor/datatables-responsive/dataTables.responsive.css') }}" rel="stylesheet">
@@ -58,9 +58,10 @@
         
         <!-- DataTables JavaScript -->
         <script src="{{ asset('dist/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('dist/vendor/datepicker/js/bootstrap-datepicker.js') }}"/>
         <script src="{{ asset('dist/vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
+        <script src="{{ asset('dist/vendor/datepicker/js/bootstrap-datepicker.js') }}"/>
         <script src="{{ asset('dist/vendor/datatables-responsive/dataTables.responsive.js') }}"></script>
+        <script src="{{ asset('dist/vendor/currency/simple.money.format.js') }}"></script>
         
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script>
@@ -79,6 +80,9 @@
                 locale :'id',
                 format : 'yyyy-mm-dd'
             };
+            
+            $("input[name='pay_field']").simpleMoneyFormat();
+            $("input[name='sub_total_field']").simpleMoneyFormat();
             
             //user table;
             $('#users_table').DataTable({
@@ -216,14 +220,18 @@
                     total += parseInt(item.innerHTML);
                 });
                 
-                $("input[name='sub_total_field']").val(total);
+                $("input[name='sub_total_field']").val(
+                
+                    ((total).toLocaleString('en-US'))  
+                
+                );
                 
             });
             
             //paid field;
             $("input[name='pay_field']").on('keyup', function (){
-                var subTotal = parseInt($("input[name='sub_total_field']").val());
-                var paid = parseInt($(this).val());
+                var subTotal = parseInt($("input[name='sub_total_field']").val().replace(",",""));
+                var paid = parseInt($(this).val().replace(",",""));
                 
                 if (paid >= subTotal) {
                     $('#transaction_btn').removeAttr('disabled');
@@ -238,8 +246,12 @@
             $('#cashier-form-id').submit(function (e) {
                 e.preventDefault();
                 
-                var amount = parseInt($("input[name='sub_total_field']").val());
-                var cash = parseInt($("input[name='pay_field']").val());
+                var amount = $("input[name='sub_total_field']").val().replace(",","");
+                var cash = $("input[name='pay_field']").val().replace(",","");
+                                
+                amount = parseInt(amount);
+                cash = parseInt(cash);
+                
                 var items = transactionDetails;
                 
                 var request = buildTransactionRequest(amount, cash, items);
@@ -324,11 +336,15 @@
             
             $('#transaction_search_btn').click(function(){
                 
+                var total = 0;
                 var fromFilter = $('[name=report-from-filter-field]').val();
                 var endFilter = $('[name=report-end-filter-field]').val();
                 
                 var data = getDateTransaction();
                 var rows = $('#transactions_table tbody tr');
+                
+                $('#transaction_total_result').hide();
+                $('#total_output').text('');
                                 
                 if ((fromFilter != '') || (endFilter != '')) {
                     var dF = new Date(fromFilter);
@@ -344,11 +360,26 @@
                                 
                                 if ((checkedDate >= dF) && (checkedDate <= eF)) {
                                     rows.eq(key).show();
+                                    total += getIntFromCurrency(rows.eq(key)[0].cells[3].innerHTML);
                                     continue;
                                 }
                                 
                                 rows.eq(key).hide();
                     
+                            }
+                            
+                            if (total > 0) {
+                                $('#transaction_total_result').show();
+                                $('#total_output').text(
+                                    ((total).toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'IDR',
+                                    }))       
+                                );
+                        
+                                var downloadRequest = buildDownloadReportRequest(fromFilter, endFilter);
+                                $('#download_report_id').attr('href',"{{ route('dashboard.transaction.download') }}"+"?parameters="+JSON.stringify(downloadRequest));
+                        
                             }
                             
                             return;
@@ -363,6 +394,7 @@
 
                             if (checkedDate >= dF) {
                                 rows.eq(key).show();
+                                total += getIntFromCurrency(rows.eq(key)[0].cells[3].innerHTML);
                                 continue;
                             }
 
@@ -377,6 +409,7 @@
 
                             if (checkedDate <= eF) {
                                 rows.eq(key).show();
+                                total += getIntFromCurrency(rows.eq(key)[0].cells[3].innerHTML);
                                 continue;
                             }
 
@@ -384,6 +417,19 @@
 
                         }
                         
+                    }
+                    
+                    if (total > 0) {
+                        $('#transaction_total_result').show();
+                        $('#total_output').text(
+                            ((total).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'IDR',
+                            }))       
+                        );
+                
+                        var downloadRequest = buildDownloadReportRequest(fromFilter, endFilter);
+                        $('#download_report_id').attr('href',"{{ route('dashboard.transaction.download') }}"+"?parameters="+JSON.stringify(downloadRequest));
                     }
                     
                     return;
@@ -979,6 +1025,21 @@
             }
             
             /**
+            * Build download request;
+             */
+            function buildDownloadReportRequest (startDate, endDate) {
+                
+                var request = {
+                    _token : $('meta[name="csrf-token"]').attr('content'),
+                    start  : startDate,
+                    end    : endDate
+                };
+                
+                return request;
+                
+            }
+            
+            /**
             * Get date transaction from table;
              */
             function getDateTransaction () {
@@ -988,6 +1049,15 @@
                     items.push( new Date($(this).text().split(" ")[1]) );       
                 });
                 return items;
+            }
+            
+            /**
+            * get integer from currency
+             */
+            function getIntFromCurrency (currencyItem) {
+                var fixedCurrencyItem = currencyItem.split(".")[0];
+                fixedCurrencyItem = fixedCurrencyItem.split(" ")[2];
+                return parseInt(fixedCurrencyItem.replace(",",""));
             }
             
         });

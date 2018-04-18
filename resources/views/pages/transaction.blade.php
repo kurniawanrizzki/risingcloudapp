@@ -146,12 +146,26 @@
                                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                                     <div class="form-group">
                                         <label>Sub Total</label>
-                                        <input class="form-control" name="sub_total_field" disabled="" style="direction: rtl;">
+                                        <div class="input-group">
+                                            
+                                            <span class="input-group-addon">
+                                                {{ \Config::get('global.APPLIED_CURRENCY') }}
+                                            </span>
+                                            <input class="form-control" name="sub_total_field" disabled="" style="direction: rtl;">
+                                            
+                                        </div>
                                         <p class="help-block">Jumlah yang harus dibayarkan.</p>
                                     </div>  
                                     <div class="form-group">
                                         <label>Bayar</label>
-                                        <input class="form-control" name="pay_field" style="direction: rtl;">
+                                        <div class="input-group">
+                                            
+                                            <span class="input-group-addon">
+                                                {{ \Config::get('global.APPLIED_CURRENCY') }}
+                                            </span>
+                                            <input class="form-control" name="pay_field" style="direction: rtl;">
+                                            
+                                        </div>
                                         <p class="help-block">Jumlah uang yang dibayarkan.</p>
                                     </div>  
                                     <div class="form-group">
